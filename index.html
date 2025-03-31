@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demo Boxes</title>
     <style>
+        /* Main layout styles */
         body {
             display: flex;
             flex-direction: column;
@@ -16,6 +17,7 @@
             font-family: Arial, sans-serif;
         }
 
+        /* Container box with shadow and styling */
         .container {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.08);
             padding: 20px;
@@ -161,6 +163,7 @@
             width: 100%;
         }
 
+        /* Dropdown styling for size and color selection from input box */
         .dropdown-container {
             display: flex;
             align-items: center;
@@ -202,12 +205,15 @@
         }
     </style>
     <script>
+        // Created Product options data with "units", "prices" and "discounts"
+        // unitOptions = this array contains the data for all 3 different "unit options" plans
         const unitOptions = [
             { units: 1, price: 9.00, originalPrice: 12.00, discount: null },
             { units: 2, price: 18.00, originalPrice: 24.00, discount: 20, popular: true },
             { units: 3, price: 27.00, originalPrice: 36.00, discount: 25 }
         ];
 
+        // Created dropdown menus for "size" and "color" selection from the "input boxes"
         function createDropdowns(unitNumber) {
             return Array(unitNumber).fill().map((_, index) => `
                 <div class="dropdown-container">
@@ -225,12 +231,18 @@
             `).join('');
         }
 
+        // Generated HTML code for each "unit option box"
+        // createUnitBox() = each "unit option" plan is converted to HTML code
         function createUnitBox(option) {
             return `
                 <div class="child-box">
                     <div class="units-box" onclick="selectOption(this, '${option.price}')" style="width: 100%; display: flex; align-items: center;">
                         <input type="radio" name="option">
+
+                        <!-- Most Popular badge -->
                         ${option.popular ? '<div class="most-popular">MOST POPULAR</div>' : ''}
+
+                        <!-- Container for the "unit count" and "price" -->
                         <div class="box-container">
                             <div class="box">
                                 <div style="font-size: 15px; font-weight: 600;">
@@ -245,6 +257,8 @@
                             </div>
                         </div>
                     </div>
+
+                       <!-- Dropdown for "size and color" input boxes -->
                     <div class="aqua-box">
                         <div class="dropdown-header">
                             <div>Size</div>
@@ -256,16 +270,19 @@
             `;
         }
 
+        // Handled selection of "unit options" and added "shows/hides dropdowns" to these option boxes
         function selectOption(element, price) {
             let childBox = element.closest('.child-box');
             let isAlreadySelected = childBox.classList.contains('selected');
 
+            // Resetting all selections
             document.querySelectorAll('.child-box').forEach(box => {
                 box.classList.remove('selected');
                 box.querySelector('input[type="radio"]').checked = false;
                 box.querySelector('.aqua-box').style.display = 'none';
             });
 
+            // Selecting clicked option if not already selected
             if (!isAlreadySelected) {
                 childBox.classList.add('selected');
                 childBox.querySelector('input[type="radio"]').checked = true;
@@ -273,8 +290,15 @@
             }
         }
 
+        // Initialize the page with "unit options" and select "most popular option"
         window.onload = function () {
+
+            // This line adds the "unit options" in the empty "parent-box" div
+            // join = here it combines all the generated HTML code into a single string & 
+            // then this string gets inserted into the empty "parent-box" div
             document.querySelector('.parent-box').innerHTML = unitOptions.map(createUnitBox).join('');
+
+            // Selects the "most popular option" (2 units option) by default
             let mostPopularOption = document.querySelectorAll('.child-box')[1];
             selectOption(mostPopularOption, '18.00');
         }
@@ -285,6 +309,11 @@
 <body>
     <div class="container">
         <div class="heading">-------------------- YAY! It's BOGO --------------------</div>
+
+        <!-- The <div class="parent-box"></div> is an empty container 
+        that serves as a placeholder where all the unit option boxes will be dynamically inserted
+        It's empty in the HTML because the content is generated dynamically using JavaScript -->
+
         <div class="parent-box"></div>
         <div class="summary">
             <div class="free-delivery">Free Delivery</div>
